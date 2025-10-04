@@ -1,0 +1,150 @@
+body {
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+/* Navbar */
+.navbar {
+  padding: 0.8rem 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Dashboard */
+.main-content h2 {
+  font-weight: 700;
+  color: #198754;
+}
+
+.stat-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  background: #fff;
+  transition: transform 0.25s ease-in-out;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Table */
+.table {
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.table th {
+  font-weight: 600;
+  color: #333;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+/* Add Product Form */
+#productForm {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+#productForm input,
+#productForm select {
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: 0.2s;
+  font-size: 0.95rem;
+}
+
+#productForm input:focus,
+#productForm select:focus {
+  border-color: #198754;
+  box-shadow: 0 0 0 0.15rem rgba(25, 135, 84, 0.15);
+}
+
+#productForm button {
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 0.6rem 1.2rem;
+  background-color: #198754;
+  border: none;
+  transition: background-color 0.2s ease-in-out;
+}
+
+#productForm button:hover {
+  background-color: #157347;
+}
+
+.stock-qty {
+    max-width: 8rem !important;
+}
+
+/* File Upload */
+#imgFile {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  /* padding: 0.4rem; */
+  background-color: #fff;
+}
+
+#imgFile::file-selector-button {
+  background-color: #198754;
+  color: #fff;
+  border: none;
+  /* padding: 0.5rem 1rem; */
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+
+#imgFile::file-selector-button:hover {
+  background-color: #157347;
+}
+
+#imgFile > #fileLabel {
+    font-size: 2px !important;
+}
+
+/* Form Layout */
+#productForm .row > div {
+  display: flex;
+  flex-direction: column;
+}
+
+#productForm input[type="number"] {
+  text-align: right;
+}
+
+#productForm input,
+#productForm select {
+  text-align: center; /* ensures typed text also centers */
+}
+
+
+/* Responsive */
+@media (max-width: 992px) {
+  #productForm .row > div {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #productForm button {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .stat-card h2 {
+    font-size: 1.4rem;
+  }
+
+  #productForm {
+    padding: 1rem;
+  }
+}
