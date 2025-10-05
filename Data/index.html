@@ -1,30 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Data Insights - Daoer Zenee</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="../Data/style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body class="bg-light">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-success shadow-sm py-3">
-    <div class="container">
-      <a class="navbar-brand fw-bold fs-4" href="/">Daoer Zenee</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daoer Zenee</title>
 
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto fs-5">
-          <li class="nav-item"><a class="nav-link" href="https://daoer-zenee-admin.vercel.app/">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="https://daoer-zenee-admin.vercel.app/Admin">Admin</a></li>
-          <li class="nav-item"><a class="nav-link active" href="https://daoer-zenee-admin.vercel.app/Data">Insights</a></li>
-        </ul>
-      </div>
+  <!-- ✅ Favicon (tab logo) -->
+  <link rel="icon" type="image/webp" href="http://daoerzenee.com/photos/logoNamaBaru.webp">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body class="bg-light">
+
+<!-- ✅ Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-success shadow-sm py-3">
+  <div class="container">
+    <!-- Brand section -->
+    <a class="navbar-brand fw-bold fs-4 d-flex align-items-center" href="/">
+      <img src="http://daoerzenee.com/photos/logoNamaBaru.webp" alt="Daoer Zenee Logo"
+           style="height: 38px; width: auto; margin-right: 10px; border-radius: 4px;">
+      Daoer Zenee
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto fs-5">
+        <li class="nav-item">
+          <a class="nav-link" href="https://daoer-zenee-admin.vercel.app/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://daoer-zenee-admin.vercel.app/Admin">Admin</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="https://daoer-zenee-admin.vercel.app/Data">Insights</a>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
+
 
   <div class="container-fluid py-4 main-content">
     <h2 class="text-center mb-4 fw-bold">Business Insights Dashboard</h2>
