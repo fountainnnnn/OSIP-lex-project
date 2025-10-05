@@ -3,12 +3,30 @@ body {
 }
 
 .main-content {
-    padding-top: 5rem !important;
+  padding-top: 6rem !important;
 }
 
+/* Navbar */
+.navbar {
+  position: fixed;
+  min-width: 100%;
+  z-index: 1000 !important;
+  font-size: 1.1rem;
+}
+
+.navbar-brand {
+  font-size: 1.5rem !important;
+}
+
+.navbar-nav .nav-link {
+  padding: 0.6rem 1rem;
+}
+
+/* Cards */
 .card {
-  border-radius: 10px;
+  border-radius: 12px;
   transition: transform 0.2s ease-in-out;
+  font-size: 1.05rem;
 }
 
 .card:hover {
@@ -16,19 +34,88 @@ body {
 }
 
 .card img {
-  height: 220px;
+  height: 250px;
   object-fit: cover;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
+.card-body h5 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.card-body p {
+  font-size: 1rem;
+}
+
+.card .btn {
+  font-size: 1rem;
+  padding: 0.55rem 1.25rem;
+  border-radius: 8px;
+}
+
+/* Section Title */
 h2 {
   font-weight: bold;
   border-bottom: 3px solid #000;
   display: inline-block;
-  padding-bottom: 5px;
+  padding-bottom: 6px;
+  font-size: 1.8rem;
 }
 
-.navbar {
-    position: fixed;
-    min-width: 100%;
-    z-index: 1000 !important;
+/* Mobile Adjustments */
+@media (max-width: 992px) {
+  .navbar {
+    padding: 1rem;
+  }
+
+  .navbar-brand {
+    font-size: 1.7rem !important;
+  }
+
+  .navbar-nav .nav-link {
+    font-size: 1.1rem;
+  }
+
+  .card img {
+    height: 230px;
+  }
+
+  .card-body h5 {
+    font-size: 1.15rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: 6.5rem !important;
+  }
+
+  #productList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  .card {
+    font-size: 1.1rem;
+  }
+
+  .card img {
+    height: 200px;
+  }
+
+  .card-body h5 {
+    font-size: 1.25rem;
+  }
+
+  .card-body p,
+  .card .btn {
+    font-size: 1.05rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
 }
