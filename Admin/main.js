@@ -23,9 +23,9 @@ function initializeMockData() {
     const mockProducts = [
       { name: "Batik Tote Bag", category: "Handycrafts", price: 85000, stock: 4, type: "in-stock" },
       { name: "Handcrafted Soap", category: "Handycrafts", price: 45000, stock: 6, type: "in-stock" },
-      { name: "Christmas Ornament Set", category: "Decor", price: 50000, type: "pre-order" },
+      { name: "Christmas Ornament Set", category: "Decor", price: 50000, type: "pre-order", preOrderLimit: 5 },
       { name: "Bamboo Lamp", category: "Home Decor", price: 220000, stock: 3, type: "in-stock" },
-      { name: "Woven Basket", category: "Handycrafts", price: 80000, type: "pre-order" }
+      { name: "Woven Basket", category: "Handycrafts", price: 80000, type: "pre-order", preOrderLimit: 3 }
     ];
     localStorage.setItem("products", JSON.stringify(mockProducts));
   }
@@ -84,7 +84,8 @@ document.getElementById("productForm").addEventListener("submit", async (e) => {
   const category = document.getElementById("category").value.trim();
   const price = parseInt(document.getElementById("price").value);
   const type = document.getElementById("type").value;
-  const stock = parseInt(document.getElementById("stock").value) || 0;
+  const stockInput = document.getElementById("stock");
+  const quantityValue = parseInt(stockInput.value) || 0;
   const fileInput = document.getElementById("imgFile");
 
   // Convert uploaded image to base64
@@ -102,7 +103,8 @@ document.getElementById("productForm").addEventListener("submit", async (e) => {
     price,
     img: imgBase64 || defaultImg,
     type,
-    ...(type === "in-stock" && { stock })
+    ...(type === "in-stock" && { stock: quantityValue }),
+    ...(type === "pre-order" && { preOrderLimit: quantityValue, preOrdersMade: 0 })
   };
 
   const savedProducts = JSON.parse(localStorage.getItem("products")) || [];
@@ -123,3 +125,26 @@ function toBase64(file) {
     reader.onerror = reject;
   });
 }
+
+// ✅ Update stock input dynamically based on type selection
+document.addEventListener("DOMContentLoaded", () => {
+  const typeSelect = document.getElementById("type");
+  const stockInput = document.getElementById("stock");
+
+  typeSelect.addEventListener("change", () => {
+    if (typeSelect.value === "in-stock") {
+      stockInput.disabled = false;
+      stockInput.placeholder = "Stock Quantity";
+      stockInput.required = true;
+    } else if (typeSelect.value === "pre-order") {
+      stockInput.disabled = false;
+      stockInput.placeholder = "Pre-order Limit";
+      stockInput.required = true;
+    } else {
+      stockInput.disabled = true;
+      stockInput.placeholder = "";
+      stockInput.value = "";
+      stockInput.required = false;
+    }
+  });
+});

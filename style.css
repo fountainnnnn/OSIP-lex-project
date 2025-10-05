@@ -55,6 +55,11 @@ body {
   border-radius: 8px;
 }
 
+/* Dual button layout */
+.card .btn + .btn {
+  margin-left: 0.5rem;
+}
+
 /* Section Title */
 h2 {
   font-weight: bold;
@@ -64,7 +69,18 @@ h2 {
   font-size: 1.8rem;
 }
 
-/* Mobile Adjustments */
+/* Product View Modal */
+#productViewModal img {
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+#viewProductDescription {
+  line-height: 1.5;
+}
+
+/* Responsive Adjustments */
 @media (max-width: 992px) {
   .navbar {
     padding: 1rem;
@@ -99,7 +115,7 @@ h2 {
   }
 
   .card {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .card img {
@@ -107,16 +123,16 @@ h2 {
   }
 
   .card-body h5 {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
   }
 
   .card-body p,
   .card .btn {
-    font-size: 1.05rem;
+    font-size: 0.95rem;
   }
 
   h2 {
-    font-size: 2rem;
+    font-size: 1.6rem;
   }
 }
 
@@ -152,5 +168,9 @@ h2 {
 
   h2 {
     font-size: 1.4rem !important;
+  }
+
+  #productViewModal img {
+    max-height: 220px;
   }
 }

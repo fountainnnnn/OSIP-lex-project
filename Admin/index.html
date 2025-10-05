@@ -96,7 +96,7 @@
     <div class="card-body">
       <h5 class="card-title mb-3">Add New Product</h5>
       <form id="productForm" enctype="multipart/form-data">
-        <div class="row g-3">
+        <div class="row g-3 align-items-center">
           <div class="col-md-3 col-6">
             <input type="text" id="name" class="form-control" placeholder="Product Name" required>
           </div>
@@ -114,7 +114,8 @@
             </select>
           </div>
           <div class="col-md-2 col-6">
-            <input type="number" id="stock" class="form-control" placeholder="Stock Qty" disabled>
+            <input type="number" id="stock" class="form-control" placeholder="Quantity" disabled>
+            <small id="stockLabel" class="text-muted d-block mt-1 text-center"></small>
           </div>
           <div class="col-md-1 col-6">
             <input type="file" id="imgFile" accept="image/*" class="form-control" required>
@@ -132,17 +133,28 @@
 </div>
 
 <script>
-  // Enable/disable stock input
+  // Enable/disable stock input dynamically with label change
   document.addEventListener('DOMContentLoaded', () => {
     const typeSelect = document.getElementById('type');
     const stockInput = document.getElementById('stock');
+    const stockLabel = document.getElementById('stockLabel');
+
     typeSelect.addEventListener('change', () => {
       if (typeSelect.value === 'in-stock') {
         stockInput.disabled = false;
+        stockInput.placeholder = 'Stock Quantity';
+        stockLabel.textContent = 'Enter available stock';
+        stockInput.required = true;
+      } else if (typeSelect.value === 'pre-order') {
+        stockInput.disabled = false;
+        stockInput.placeholder = 'Pre-order Limit';
+        stockLabel.textContent = 'Enter max pre-order quantity';
         stockInput.required = true;
       } else {
         stockInput.disabled = true;
         stockInput.value = '';
+        stockInput.placeholder = 'Quantity';
+        stockLabel.textContent = '';
         stockInput.required = false;
       }
     });
