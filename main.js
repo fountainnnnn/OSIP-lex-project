@@ -23,7 +23,8 @@ function loadProducts() {
     const outOfStock = p.type === "in-stock" && p.stock <= 0;
 
     const card = document.createElement("div");
-    card.className = "col-md-4 col-lg-3";
+    card.className = "col-12 col-sm-6 col-md-4 col-lg-3"; // full width on mobile
+
     card.innerHTML = `
       <div class="card h-100 shadow-sm">
         <img src="${imageSrc}" class="card-img-top" alt="${p.name}" onerror="this.src='${defaultImg}'">

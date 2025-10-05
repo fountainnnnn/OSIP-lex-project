@@ -119,3 +119,38 @@ h2 {
     font-size: 2rem;
   }
 }
+
+/* Extra small screens: force 1 column layout */
+@media (max-width: 576px) {
+  #productList {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .card {
+    width: 100% !important;
+    font-size: 0.9rem;
+  }
+
+  .card img {
+    height: 180px !important;
+  }
+
+  .card-body {
+    padding: 0.9rem !important;
+  }
+
+  .card-body h5 {
+    font-size: 1rem !important;
+  }
+
+  .card-body p,
+  .card .btn {
+    font-size: 0.9rem !important;
+  }
+
+  h2 {
+    font-size: 1.4rem !important;
+  }
+}
