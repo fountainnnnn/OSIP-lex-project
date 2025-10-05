@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 let salesTrendChartInstance = null;
 
-// ✅ Load mock data (from admin)
+//  Load mock data (from admin)
 function initializeMockData() {
   const existingPurchases = JSON.parse(localStorage.getItem("purchases"));
   if (!existingPurchases || existingPurchases.length === 0) {
@@ -136,7 +136,7 @@ function drawSalesTrend(purchases) {
   if (salesTrendChartInstance) salesTrendChartInstance.destroy();
 
   const ctx = document.getElementById("salesTrendChart");
-  ctx.parentElement.style.height = "400px"; // ✅ container controls chart height
+  ctx.parentElement.style.height = "400px"; //  container controls chart height
   ctx.style.height = "100%";
   ctx.style.width = "100%";
 
@@ -157,7 +157,7 @@ function drawSalesTrend(purchases) {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: false, // ✅ keeps full interactivity
+      maintainAspectRatio: false, //  keeps full interactivity
       plugins: { legend: { position: "bottom" } },
       scales: {
         y: {
