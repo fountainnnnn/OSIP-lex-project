@@ -1,0 +1,59 @@
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.main-content {
+  padding-top: 6rem !important;
+}
+
+.summary-card {
+  border-left: 5px solid #198754;
+  transition: transform 0.2s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-title {
+  font-weight: 600;
+}
+
+canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* --- Equal Chart Heights --- */
+.chart-card {
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Match the two chart containers’ height visually */
+#revenueChart,
+#typeDistributionChart {
+  height: 260px !important;
+}
+
+/* Make pie chart smaller and centered */
+#typeDistributionChart {
+  max-width: 260px;
+  margin: 0 auto;
+}
+
+/* Table styles */
+.table th, .table td {
+  vertical-align: middle !important;
+}
+
+.table-success th {
+  background-color: #198754 !important;
+  color: white;
+}
+
+.navbar-brand {
+  font-weight: bold;
+}

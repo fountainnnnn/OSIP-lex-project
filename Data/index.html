@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Insights - Daoer Zenee</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../Data/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-success shadow-sm py-3">
+    <div class="container">
+      <a class="navbar-brand fw-bold fs-4" href="/">Daoer Zenee</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto fs-5">
+          <li class="nav-item"><a class="nav-link" href="https://daoer-zenee-admin.vercel.app/">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="https://daoer-zenee-admin.vercel.app/Admin">Admin</a></li>
+          <li class="nav-item"><a class="nav-link active" href="https://daoer-zenee-admin.vercel.app/Data">Insights</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid py-4 main-content">
+    <h2 class="text-center mb-4 fw-bold">Business Insights Dashboard</h2>
+
+    <!-- Summary Cards -->
+    <div class="row g-4 mb-5 text-center">
+      <div class="col-md-3 col-sm-6">
+        <div class="card summary-card shadow-sm">
+          <div class="card-body">
+            <h6 class="text-muted">Total Sales</h6>
+            <h2 id="totalSales" class="fw-bold text-success">0</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="card summary-card shadow-sm">
+          <div class="card-body">
+            <h6 class="text-muted">Total Revenue (Rp)</h6>
+            <h2 id="totalRevenue" class="fw-bold text-success">0</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="card summary-card shadow-sm">
+          <div class="card-body">
+            <h6 class="text-muted">Top Product</h6>
+            <h5 id="topProduct" class="fw-bold text-success">-</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="card summary-card shadow-sm">
+          <div class="card-body">
+            <h6 class="text-muted">Average Quantity per Sale</h6>
+            <h2 id="avgQty" class="fw-bold text-success">0</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row g-4 mb-5">
+      <div class="col-lg-6">
+        <div class="card shadow-sm p-3 chart-card">
+          <h5 class="card-title mb-3">Revenue by Product</h5>
+          <canvas id="revenueChart"></canvas>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card shadow-sm p-3 chart-card">
+          <h5 class="card-title mb-3">Stock vs Pre-Order Items</h5>
+          <canvas id="typeDistributionChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+      <div class="col-lg-12">
+        <div class="card shadow-sm p-3">
+          <h5 class="card-title mb-3">Daily Sales Trend</h5>
+          <canvas id="salesTrendChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Purchases -->
+    <div class="card shadow-sm mb-5">
+      <div class="card-body">
+        <h5 class="card-title mb-3">Recent Purchases</h5>
+        <div class="table-responsive">
+          <table class="table table-hover table-striped align-middle">
+            <thead class="table-success">
+              <tr>
+                <th>#</th>
+                <th>Product</th>
+                <th>Buyer</th>
+                <th>Type</th>
+                <th>Quantity</th>
+                <th>Total (Rp)</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="recentTable">
+              <tr><td colspan="7" class="text-center text-muted">No purchases found.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../Data/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

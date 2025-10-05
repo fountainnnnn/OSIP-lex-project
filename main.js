@@ -50,13 +50,14 @@ const defaultProducts = [
     category: "Handycrafts",
     price: 250000,
     type: "pre-order",
+    preOrderLimit: Math.floor(Math.random() * 5) + 1,
+    preOrdersMade: 0,
     img: "",
     description: "The Custom Wooden Frame is handcrafted by Rizal Hamdani, a deaf carpenter from Solo who has spent years perfecting his craft. He began woodworking as a boy, silently learning from his grandfather’s gestures. For Rizal, every piece of wood tells a story. He uses reclaimed teak, sanding and polishing it until it feels like skin. Each frame is custom-made with great attention to detail, meant to protect the photographs that carry our memories. Rizal signs his initials into the wood before delivery, a quiet promise of quality. His work is not just craftsmanship—it is a way to communicate without words. Through his frames, he teaches us that the strongest messages can be felt, not heard."
   }
 ];
 
-// --- rest of code identical to previous version ---
-
+// --- core logic ---
 const defaultImg = "https://preyash2047.github.io/assets/img/no-preview-available.png?h=824917b166935ea4772542bec6e8f636";
 
 function loadProducts() {
@@ -68,6 +69,7 @@ function loadProducts() {
   allProducts.forEach((p, index) => {
     const imageSrc = p.img && p.img.trim() !== "" ? p.img : defaultImg;
     const outOfStock = p.type === "in-stock" && p.stock <= 0;
+    const remainingPreOrders = (p.preOrderLimit || Math.floor(Math.random() * 5) + 1) - (p.preOrdersMade || 0);
 
     const card = document.createElement("div");
     card.className = "col-12 col-sm-6 col-md-4 col-lg-3";
@@ -79,6 +81,16 @@ function loadProducts() {
             <h5 class="card-title">${p.name}</h5>
             <p class="text-muted">${p.category}</p>
             <p class="fw-bold text-success">Rp. ${p.price.toLocaleString()}</p>
+            ${
+              p.type === "in-stock"
+                ? `<p class="text-secondary small mb-2">Stock: 
+                    <span id="stock-${index}" class="${outOfStock ? 'text-danger fw-bold' : 'text-success'}">
+                      ${p.stock > 0 ? p.stock : 'Out of Stock'}
+                    </span></p>`
+                : `<p class="text-primary small mb-2 fw-bold">
+                    Pre-order available: ${remainingPreOrders > 0 ? remainingPreOrders : 'Full'}
+                  </p>`
+            }
           </div>
           <div class="d-flex justify-content-between mt-2">
             <button class="btn btn-outline-primary view-btn flex-fill me-1" data-index="${index}">View Product</button>
@@ -166,10 +178,14 @@ function openPurchaseModal(e) {
     <p class="mb-1 text-muted">${p.category}</p>
     <p class="mb-1 fw-bold text-success">Rp. ${p.price.toLocaleString()}</p>
     <p class="small text-${p.type === "in-stock" ? "secondary" : "primary"} mb-0">
-      ${p.type === "in-stock" ? `Stock available: ${p.stock}` : "Pre-order item"}
+      ${
+        p.type === "in-stock"
+          ? `Stock available: ${p.stock}`
+          : `Pre-order available: ${(p.preOrderLimit || 0) - (p.preOrdersMade || 0)}`
+      }
     </p>`;
   const qtyInput = document.getElementById("purchaseQty");
-  qtyInput.max = p.stock || 99;
+  qtyInput.max = p.type === "in-stock" ? p.stock : (p.preOrderLimit || 5) - (p.preOrdersMade || 0);
   qtyInput.value = 1;
   const modal = new bootstrap.Modal(document.getElementById("purchaseModal"));
   modal.show();
@@ -178,6 +194,10 @@ function openPurchaseModal(e) {
     let qty = parseInt(document.getElementById("purchaseQty").value) || 1;
     if (p.type === "in-stock" && qty > p.stock) {
       alert("Not enough stock available!");
+      return;
+    }
+    if (p.type === "pre-order" && (p.preOrdersMade || 0) + qty > (p.preOrderLimit || 5)) {
+      alert("Pre-order limit reached!");
       return;
     }
     handlePurchase(p, index, qty, buyerName);
@@ -189,6 +209,8 @@ function handlePurchase(product, productIndex, quantity, buyer) {
   const products = JSON.parse(localStorage.getItem("products")) || [];
   const purchases = JSON.parse(localStorage.getItem("purchases")) || [];
   if (product.type === "in-stock") products[productIndex].stock -= quantity;
+  else if (product.type === "pre-order")
+    products[productIndex].preOrdersMade = (products[productIndex].preOrdersMade || 0) + quantity;
   const newPurchase = {
     product: product.name,
     buyer: buyer,

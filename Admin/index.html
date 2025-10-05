@@ -17,8 +17,9 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto fs-5">
-        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-        <li class="nav-item"><a class="nav-link active" href="/admin/">Admin</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://daoer-zenee-admin.vercel.app">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="https://daoer-zenee-admin.vercel.app/Admin">Admin</a></li>
+        <li class="nav-item"><a class="nav-link active" href="https://daoer-zenee-admin.vercel.app/Data">Insights</a></li>
       </ul>
     </div>
   </div>
@@ -92,12 +93,12 @@
   </div>
 
   <!-- Add Product Form -->
-  <div class="card shadow-sm">
+  <div class="card shadow-sm mb-4">
     <div class="card-body">
       <h5 class="card-title mb-3">Add New Product</h5>
       <form id="productForm" enctype="multipart/form-data">
         <div class="row g-3 align-items-center">
-          <div class="col-md-3 col-6">
+          <div class="col-md-2 col-6">
             <input type="text" id="name" class="form-control" placeholder="Product Name" required>
           </div>
           <div class="col-md-2 col-6">
@@ -113,11 +114,11 @@
               <option value="pre-order">Pre-order</option>
             </select>
           </div>
-          <div class="col-md-2 col-6">
+          <div class="col-md-1 col-6">
             <input type="number" id="stock" class="form-control" placeholder="Quantity" disabled>
             <small id="stockLabel" class="text-muted d-block mt-1 text-center"></small>
           </div>
-          <div class="col-md-1 col-6">
+          <div class="col-md-2 col-6">
             <input type="file" id="imgFile" accept="image/*" class="form-control" required>
           </div>
         </div>
@@ -130,6 +131,14 @@
       </form>
     </div>
   </div>
+
+  <!-- Data Analysis Dashboard Button -->
+  <div class="text-center mt-4 mb-5">
+    <a href="http://daoer-zenee-admin.vercel.app/Data" class="btn btn-outline-success px-5 py-2 fs-5 shadow-sm">
+      📊 View Data Analysis Dashboard
+    </a>
+  </div>
+
 </div>
 
 <script>
