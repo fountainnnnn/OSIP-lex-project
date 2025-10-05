@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 let salesTrendChartInstance = null;
 
-//  Load mock data (from admin)
+// Initialize mock data
 function initializeMockData() {
   const existingPurchases = JSON.parse(localStorage.getItem("purchases"));
   if (!existingPurchases || existingPurchases.length === 0) {
@@ -34,6 +34,7 @@ function initializeMockData() {
   }
 }
 
+// Load dashboard
 function loadDashboardInsights() {
   const purchases = JSON.parse(localStorage.getItem("purchases")) || [];
   const products = JSON.parse(localStorage.getItem("products")) || [];
@@ -59,23 +60,20 @@ function loadDashboardInsights() {
   renderRecentPurchases(purchases);
 }
 
-// Bar Chart
+// Bar Chart: Revenue by Product
 function drawRevenueChart(purchases) {
   const dataMap = {};
   purchases.forEach(p => {
     dataMap[p.product] = (dataMap[p.product] || 0) + (p.total || 0);
   });
 
-  const labels = Object.keys(dataMap);
-  const values = Object.values(dataMap);
-
   new Chart(document.getElementById("revenueChart"), {
     type: "bar",
     data: {
-      labels,
+      labels: Object.keys(dataMap),
       datasets: [{
         label: "Revenue (Rp)",
-        data: values,
+        data: Object.values(dataMap),
         backgroundColor: "#198754",
         borderRadius: 6
       }]
@@ -86,21 +84,17 @@ function drawRevenueChart(purchases) {
       scales: {
         y: {
           beginAtZero: true,
-          ticks: {
-            color: "#333",
-            callback: value => "Rp " + value.toLocaleString("id-ID")
-          },
+          ticks: { callback: v => "Rp " + v.toLocaleString("id-ID"), color: "#333" },
           grid: { color: "rgba(0,0,0,0.05)" }
         },
         x: { ticks: { color: "#333" }, grid: { display: false } }
       },
-      plugins: { legend: { display: false } },
-      animation: { duration: 800 }
+      plugins: { legend: { display: false } }
     }
   });
 }
 
-// Pie Chart
+// Pie Chart: Stock vs Pre-Order
 function drawTypeDistribution(products) {
   const inStock = products.filter(p => p.type === "in-stock").length;
   const preOrder = products.filter(p => p.type === "pre-order").length;
@@ -111,8 +105,7 @@ function drawTypeDistribution(products) {
       labels: ["In Stock", "Pre-Order"],
       datasets: [{
         data: [inStock, preOrder],
-        backgroundColor: ["#198754", "#FFC107"],
-        borderWidth: 2
+        backgroundColor: ["#198754", "#FFC107"]
       }]
     },
     options: {
@@ -123,7 +116,7 @@ function drawTypeDistribution(products) {
   });
 }
 
-// Line Chart
+// Line Chart: Daily Sales Trend
 function drawSalesTrend(purchases) {
   const trendData = {};
   purchases.forEach(p => {
@@ -136,10 +129,6 @@ function drawSalesTrend(purchases) {
   if (salesTrendChartInstance) salesTrendChartInstance.destroy();
 
   const ctx = document.getElementById("salesTrendChart");
-  ctx.parentElement.style.height = "400px"; //  container controls chart height
-  ctx.style.height = "100%";
-  ctx.style.width = "100%";
-
   salesTrendChartInstance = new Chart(ctx, {
     type: "line",
     data: {
@@ -157,29 +146,22 @@ function drawSalesTrend(purchases) {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: false, //  keeps full interactivity
+      maintainAspectRatio: false,
       plugins: { legend: { position: "bottom" } },
       scales: {
         y: {
           beginAtZero: true,
-          ticks: {
-            callback: v => "Rp " + v.toLocaleString("id-ID"),
-            color: "#333"
-          },
+          ticks: { callback: v => "Rp " + v.toLocaleString("id-ID"), color: "#333" },
           grid: { color: "rgba(0,0,0,0.05)" }
         },
-        x: {
-          ticks: { color: "#333" },
-          grid: { color: "rgba(0,0,0,0.05)" }
-        }
+        x: { ticks: { color: "#333" }, grid: { color: "rgba(0,0,0,0.05)" } }
       },
-      interaction: { mode: "index", intersect: false },
-      animation: { duration: 1000 }
+      interaction: { mode: "index", intersect: false }
     }
   });
 }
 
-// Table
+// Recent Purchases Table
 function renderRecentPurchases(purchases) {
   const table = document.getElementById("recentTable");
   table.innerHTML = "";

@@ -19,32 +19,28 @@ body {
   font-weight: 600;
 }
 
-canvas {
-  width: 100% !important;
-  height: 100% !important;
+/* Chart Containers */
+.chart-container {
+  position: relative;
+  height: 320px;
+  width: 100%;
 }
 
-/* --- Equal Chart Heights --- */
+.chart-container.pie {
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .chart-card {
-  min-height: 360px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 380px;
 }
 
-/* Match the two chart containers’ height visually */
-#revenueChart,
-#typeDistributionChart {
-  height: 260px !important;
-}
-
-/* Make pie chart smaller and centered */
-#typeDistributionChart {
-  max-width: 260px;
-  margin: 0 auto;
-}
-
-/* Table styles */
+/* Table */
 .table th, .table td {
   vertical-align: middle !important;
 }
@@ -52,6 +48,13 @@ canvas {
 .table-success th {
   background-color: #198754 !important;
   color: white;
+}
+
+/* Navbar */
+.navbar-brand img {
+  height: 38px;
+  border-radius: 4px;
+  margin-right: 8px;
 }
 
 .navbar-brand {
