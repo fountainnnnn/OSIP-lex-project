@@ -4,13 +4,17 @@ window.addEventListener("DOMContentLoaded", () => {
   renderPurchases();
 });
 
-// ✅ Initialize mock data
+// ✅ Initialize mock data for testing/demo
 function initializeMockData() {
   const existingPurchases = JSON.parse(localStorage.getItem("purchases"));
   if (!existingPurchases || existingPurchases.length === 0) {
     const mockPurchases = [
       { product: "Batik Tote Bag", buyer: "Alya", type: "in-stock", quantity: 1, total: 85000, date: "2025-09-29" },
-      { product: "Handcrafted Soap", buyer: "Rafi", type: "in-stock", quantity: 3, total: 135000, date: "2025-09-30" }
+      { product: "Handcrafted Soap", buyer: "Rafi", type: "in-stock", quantity: 3, total: 135000, date: "2025-09-30" },
+      { product: "Bamboo Lamp", buyer: "Nadia", type: "in-stock", quantity: 1, total: 220000, date: "2025-10-01" },
+      { product: "Christmas Ornament Set", buyer: "Lukas", type: "pre-order", quantity: 2, total: 100000, date: "2025-10-02" },
+      { product: "Custom Wooden Frame", buyer: "Elena", type: "pre-order", quantity: 1, total: 250000, date: "2025-10-03" },
+      { product: "Woven Basket", buyer: "Hani", type: "in-stock", quantity: 2, total: 160000, date: "2025-10-04" }
     ];
     localStorage.setItem("purchases", JSON.stringify(mockPurchases));
   }
@@ -19,12 +23,17 @@ function initializeMockData() {
   if (!existingProducts || existingProducts.length === 0) {
     const mockProducts = [
       { name: "Batik Tote Bag", category: "Handycrafts", price: 85000, stock: 4, type: "in-stock", description: "Handmade batik tote bag with traditional patterns." },
-      { name: "Bamboo Lamp", category: "Home Decor", price: 220000, stock: 3, type: "in-stock", description: "Eco-friendly handcrafted bamboo lamp." }
+      { name: "Handcrafted Soap", category: "Handycrafts", price: 45000, stock: 6, type: "in-stock", description: "Organic soap with floral scent and eco-friendly packaging." },
+      { name: "Bamboo Lamp", category: "Home Decor", price: 220000, stock: 3, type: "in-stock", description: "Eco-friendly handcrafted bamboo lamp perfect for warm interiors." },
+      { name: "Christmas Ornament Set", category: "Decor", price: 50000, type: "pre-order", preOrderLimit: 5, preOrdersMade: 1, description: "Festive ornament set with traditional Indonesian touches." },
+      { name: "Custom Wooden Frame", category: "Handycrafts", price: 250000, type: "pre-order", preOrderLimit: 5, preOrdersMade: 0, description: "Beautifully engraved customizable wooden photo frame." },
+      { name: "Woven Basket", category: "Handycrafts", price: 80000, stock: 5, type: "in-stock", description: "Sturdy woven basket made from recycled materials." }
     ];
     localStorage.setItem("products", JSON.stringify(mockProducts));
   }
 }
 
+// ✅ Dashboard calculation
 function loadDashboard() {
   const products = JSON.parse(localStorage.getItem("products")) || [];
   const purchases = JSON.parse(localStorage.getItem("purchases")) || [];
@@ -33,10 +42,14 @@ function loadDashboard() {
   document.getElementById("totalPurchases").textContent = purchases.reduce((sum, p) => sum + (p.quantity || 1), 0);
   const revenue = purchases.reduce((sum, p) => sum + (p.total || 0), 0);
   document.getElementById("totalRevenue").textContent = revenue.toLocaleString("id-ID");
-  const totalStock = products.filter(p => p.type === "in-stock").reduce((sum, p) => sum + (p.stock || 0), 0);
+
+  const totalStock = products
+    .filter(p => p.type === "in-stock")
+    .reduce((sum, p) => sum + (p.stock || 0), 0);
   document.getElementById("totalStock").textContent = totalStock;
 }
 
+// ✅ Render purchase history table
 function renderPurchases() {
   const purchases = JSON.parse(localStorage.getItem("purchases")) || [];
   const table = document.getElementById("purchaseHistory");
@@ -52,17 +65,51 @@ function renderPurchases() {
     row.innerHTML = `
       <td>${i + 1}</td>
       <td>${p.product}</td>
-      <td>${p.buyer}</td>
-      <td>${p.type}</td>
-      <td>${p.quantity}</td>
+      <td>${p.buyer || "N/A"}</td>
+      <td>${p.type || "in-stock"}</td>
+      <td>${p.quantity || 1}</td>
       <td>Rp. ${(p.total || 0).toLocaleString("id-ID")}</td>
-      <td>${p.date}</td>
+      <td>${p.date || new Date().toISOString().split("T")[0]}</td>
     `;
     table.appendChild(row);
   });
 }
 
-// Handle Add Product form
+// ✅ Record a new purchase (for checkout integration)
+function recordPurchase(purchaseData) {
+  /**
+   * purchaseData format example:
+   * {
+   *   product: "Batik Tote Bag",
+   *   buyer: "John Doe",
+   *   type: "in-stock",
+   *   quantity: 2,
+   *   total: 170000,
+   *   date: "2025-10-06"
+   * }
+   */
+  const purchases = JSON.parse(localStorage.getItem("purchases")) || [];
+  purchases.push(purchaseData);
+  localStorage.setItem("purchases", JSON.stringify(purchases));
+
+  // update product stock or pre-order counter
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+  const product = products.find(p => p.name === purchaseData.product);
+  if (product) {
+    if (product.type === "in-stock") {
+      product.stock = Math.max(0, (product.stock || 0) - (purchaseData.quantity || 1));
+    } else if (product.type === "pre-order") {
+      product.preOrdersMade = (product.preOrdersMade || 0) + (purchaseData.quantity || 1);
+    }
+  }
+  localStorage.setItem("products", JSON.stringify(products));
+
+  // refresh dashboard
+  loadDashboard();
+  renderPurchases();
+}
+
+// ✅ Add Product handler
 document.getElementById("productForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -75,7 +122,6 @@ document.getElementById("productForm").addEventListener("submit", async (e) => {
   const descText = document.getElementById("description").value.trim();
   const fileInput = document.getElementById("imgFile");
 
-  // Convert uploaded image to base64 if provided
   let imgBase64 = "";
   if (fileInput.files.length > 0) {
     imgBase64 = await toBase64(fileInput.files[0]);
@@ -103,6 +149,7 @@ document.getElementById("productForm").addEventListener("submit", async (e) => {
   loadDashboard();
 });
 
+// ✅ Helper: convert file to Base64
 function toBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
