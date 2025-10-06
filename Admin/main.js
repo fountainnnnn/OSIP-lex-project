@@ -2,6 +2,7 @@ window.addEventListener("DOMContentLoaded", () => {
   initializeMockData();
   loadDashboard();
   renderPurchases();
+  setupStockInputToggle(); // ✅ re-added for quantity toggle behavior
 });
 
 //  Initialize mock data for testing/demo
@@ -77,17 +78,6 @@ function renderPurchases() {
 
 //  Record a new purchase (for checkout integration)
 function recordPurchase(purchaseData) {
-  /**
-   * purchaseData format example:
-   * {
-   *   product: "Batik Tote Bag",
-   *   buyer: "John Doe",
-   *   type: "in-stock",
-   *   quantity: 2,
-   *   total: 170000,
-   *   date: "2025-10-06"
-   * }
-   */
   const purchases = JSON.parse(localStorage.getItem("purchases")) || [];
   purchases.push(purchaseData);
   localStorage.setItem("purchases", JSON.stringify(purchases));
@@ -104,7 +94,6 @@ function recordPurchase(purchaseData) {
   }
   localStorage.setItem("products", JSON.stringify(products));
 
-  // refresh dashboard
   loadDashboard();
   renderPurchases();
 }
@@ -148,6 +137,33 @@ document.getElementById("productForm").addEventListener("submit", async (e) => {
   document.getElementById("productForm").reset();
   loadDashboard();
 });
+
+// ✅ Re-added: stock / pre-order quantity dynamic toggle
+function setupStockInputToggle() {
+  const typeSelect = document.getElementById("type");
+  const stockInput = document.getElementById("stock");
+  const stockLabel = document.getElementById("stockLabel");
+
+  typeSelect.addEventListener("change", () => {
+    if (typeSelect.value === "in-stock") {
+      stockInput.disabled = false;
+      stockInput.placeholder = "Stock Quantity";
+      stockLabel.textContent = "Enter available stock";
+      stockInput.required = true;
+    } else if (typeSelect.value === "pre-order") {
+      stockInput.disabled = false;
+      stockInput.placeholder = "Pre-order Limit";
+      stockLabel.textContent = "Enter max pre-order quantity";
+      stockInput.required = true;
+    } else {
+      stockInput.disabled = true;
+      stockInput.placeholder = "Quantity";
+      stockLabel.textContent = "";
+      stockInput.required = false;
+      stockInput.value = "";
+    }
+  });
+}
 
 //  Helper: convert file to Base64
 function toBase64(file) {
