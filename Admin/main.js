@@ -4,7 +4,7 @@ window.addEventListener("DOMContentLoaded", () => {
   renderPurchases();
 });
 
-// ✅ Initialize mock data for testing/demo
+//  Initialize mock data for testing/demo
 function initializeMockData() {
   const existingPurchases = JSON.parse(localStorage.getItem("purchases"));
   if (!existingPurchases || existingPurchases.length === 0) {
@@ -33,7 +33,7 @@ function initializeMockData() {
   }
 }
 
-// ✅ Dashboard calculation
+//  Dashboard calculation
 function loadDashboard() {
   const products = JSON.parse(localStorage.getItem("products")) || [];
   const purchases = JSON.parse(localStorage.getItem("purchases")) || [];
@@ -49,7 +49,7 @@ function loadDashboard() {
   document.getElementById("totalStock").textContent = totalStock;
 }
 
-// ✅ Render purchase history table
+//  Render purchase history table
 function renderPurchases() {
   const purchases = JSON.parse(localStorage.getItem("purchases")) || [];
   const table = document.getElementById("purchaseHistory");
@@ -75,7 +75,7 @@ function renderPurchases() {
   });
 }
 
-// ✅ Record a new purchase (for checkout integration)
+//  Record a new purchase (for checkout integration)
 function recordPurchase(purchaseData) {
   /**
    * purchaseData format example:
@@ -109,7 +109,7 @@ function recordPurchase(purchaseData) {
   renderPurchases();
 }
 
-// ✅ Add Product handler
+//  Add Product handler
 document.getElementById("productForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -149,7 +149,7 @@ document.getElementById("productForm").addEventListener("submit", async (e) => {
   loadDashboard();
 });
 
-// ✅ Helper: convert file to Base64
+//  Helper: convert file to Base64
 function toBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();

@@ -6,7 +6,7 @@ function clearCart() {
   localStorage.removeItem("cart");
 }
 
-// ✅ Record a purchase (used by checkout)
+//  Record a purchase (used by checkout)
 function recordPurchase(purchaseData) {
   const purchases = JSON.parse(localStorage.getItem("purchases")) || [];
   purchases.push(purchaseData);
@@ -25,7 +25,7 @@ function recordPurchase(purchaseData) {
   localStorage.setItem("products", JSON.stringify(products));
 }
 
-// ✅ Render the checkout summary
+//  Render the checkout summary
 function renderSummary() {
   const cart = getCart();
   const summary = document.getElementById("orderSummary");
@@ -51,7 +51,7 @@ function renderSummary() {
   totalBox.textContent = "Rp. " + total.toLocaleString();
 }
 
-// ✅ Handle Checkout Payment Simulation
+//  Handle Checkout Payment Simulation
 document.getElementById("checkoutForm").addEventListener("submit", e => {
   e.preventDefault();
   const cart = getCart();
