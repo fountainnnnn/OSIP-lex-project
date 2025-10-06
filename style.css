@@ -7,19 +7,52 @@ body {
 }
 
 /* Navbar */
-.navbar {
+.navbar { min-width: 100%; z-index: 1000 !important; font-size: 1.1rem; }
+.navbar-brand { font-size: 1.5rem !important; }
+.navbar-nav .nav-link { padding: 0.6rem 1rem; }
+
+/* Cart */
+#cartCount { font-size: 0.75rem; }
+
+.cart-dropdown {
+  min-width: 400px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #fffaf2, #ffffff);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  border: 1px solid rgba(0,0,0,0.05);
+}
+.cart-dropdown li { list-style: none; margin-bottom: 0.6rem; }
+.cart-dropdown hr {
+  border-top: 2px solid #d8d8d8;
+  margin: 0.5rem 0;
+}
+.cart-dropdown .fw-semibold {
+  color: #333;
+}
+.cart-dropdown .btn-success {
+  border-radius: 10px;
+  background-color: #198754;
+  font-weight: 600;
+}
+.cart-dropdown .btn-success:hover {
+  background-color: #157347;
+}
+
+/* Success modal popup */
+.success-modal {
   position: fixed;
-  min-width: 100%;
-  z-index: 1000 !important;
-  font-size: 1.1rem;
+  bottom: 30px;
+  right: 30px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+  pointer-events: none;
+  z-index: 2000;
 }
-
-.navbar-brand {
-  font-size: 1.5rem !important;
-}
-
-.navbar-nav .nav-link {
-  padding: 0.6rem 1rem;
+.success-modal.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 /* Cards */
@@ -28,37 +61,16 @@ body {
   transition: transform 0.2s ease-in-out;
   font-size: 1.05rem;
 }
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
+.card:hover { transform: translateY(-5px); }
 .card img {
   height: 250px;
   object-fit: cover;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
 }
-
-.card-body h5 {
-  font-size: 1.2rem;
-  font-weight: 600;
-}
-
-.card-body p {
-  font-size: 1rem;
-}
-
-.card .btn {
-  font-size: 1rem;
-  padding: 0.55rem 1.25rem;
-  border-radius: 8px;
-}
-
-/* Dual button layout */
-.card .btn + .btn {
-  margin-left: 0.5rem;
-}
+.card-body h5 { font-size: 1.2rem; font-weight: 600; }
+.card-body p { font-size: 1rem; }
+.card .btn { font-size: 1rem; padding: 0.55rem 1.25rem; border-radius: 8px; }
 
 /* Section Title */
 h2 {
@@ -69,108 +81,30 @@ h2 {
   font-size: 1.8rem;
 }
 
-/* Product View Modal */
+/* Modal */
 #productViewModal img {
   max-height: 300px;
   object-fit: cover;
   border-radius: 10px;
 }
 
-#viewProductDescription {
-  line-height: 1.5;
-}
-
-/* Responsive Adjustments */
+/* Responsive */
 @media (max-width: 992px) {
-  .navbar {
-    padding: 1rem;
-  }
-
-  .navbar-brand {
-    font-size: 1.7rem !important;
-  }
-
-  .navbar-nav .nav-link {
-    font-size: 1.1rem;
-  }
-
-  .card img {
-    height: 230px;
-  }
-
-  .card-body h5 {
-    font-size: 1.15rem;
-  }
+  .navbar { padding: 1rem; }
+  .navbar-brand { font-size: 1.7rem !important; }
+  .navbar-nav .nav-link { font-size: 1.1rem; }
+  .card img { height: 230px; }
 }
-
 @media (max-width: 768px) {
-  .main-content {
-    padding-top: 6.5rem !important;
-  }
-
-  #productList {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
-  }
-
-  .card {
-    font-size: 1rem;
-  }
-
-  .card img {
-    height: 200px;
-  }
-
-  .card-body h5 {
-    font-size: 1.1rem;
-  }
-
-  .card-body p,
-  .card .btn {
-    font-size: 0.95rem;
-  }
-
-  h2 {
-    font-size: 1.6rem;
-  }
+  .main-content { padding-top: 6.5rem !important; }
+  #productList { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+  .card img { height: 200px; }
+  h2 { font-size: 1.6rem; }
 }
-
-/* Extra small screens: force 1 column layout */
 @media (max-width: 576px) {
-  #productList {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 1rem !important;
-  }
-
-  .card {
-    width: 100% !important;
-    font-size: 0.9rem;
-  }
-
-  .card img {
-    height: 180px !important;
-  }
-
-  .card-body {
-    padding: 0.9rem !important;
-  }
-
-  .card-body h5 {
-    font-size: 1rem !important;
-  }
-
-  .card-body p,
-  .card .btn {
-    font-size: 0.9rem !important;
-  }
-
-  h2 {
-    font-size: 1.4rem !important;
-  }
-
-  #productViewModal img {
-    max-height: 220px;
-  }
+  #productList { display: grid !important; grid-template-columns: 1fr !important; gap: 1rem !important; }
+  .card img { height: 180px !important; }
+  h2 { font-size: 1.4rem !important; }
+  #productViewModal img { max-height: 220px; }
+  .cart-dropdown { min-width: 90vw; }
 }

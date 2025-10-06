@@ -1,0 +1,85 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* Checkout Header */
+.checkout-title {
+  font-weight: bold;
+  color: #198754;
+  border-bottom: 3px solid #198754;
+  display: inline-block;
+  padding-bottom: 6px;
+}
+
+/* Form & Summary Box */
+.checkout-card {
+  background: #fffef9;
+  border-radius: 14px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.summary-box {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+}
+
+.summary-item {
+  border-bottom: 1px solid #eee;
+  padding: 0.6rem 0;
+}
+.summary-item:last-child {
+  border-bottom: none;
+}
+
+.form-control {
+  border-radius: 8px;
+}
+
+.btn-success {
+  border-radius: 10px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+}
+
+.payment-section {
+  background: #fffaf2;
+  border-radius: 10px;
+  padding: 1.25rem;
+  border: 1px solid #f3e9d2;
+}
+
+.credit-input {
+  font-family: monospace;
+  letter-spacing: 1px;
+}
+
+/* --- Center Success Modal --- */
+.center-success-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 3000;
+}
+
+.center-success-modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.success-box {
+  max-width: 420px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
