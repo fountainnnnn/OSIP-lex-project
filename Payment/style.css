@@ -3,6 +3,13 @@ body {
   background-color: #f8f9fa;
 }
 
+
+/* Navbar */
+.navbar { min-width: 100%; z-index: 1000 !important; font-size: 1.1rem; }
+.navbar-brand { font-size: 1.5rem !important; }
+.navbar-nav .nav-link { padding: 0.6rem 1rem; }
+
+
 /* Checkout Header */
 .checkout-title {
   font-weight: bold;
