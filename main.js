@@ -2,12 +2,61 @@ const defaultImg = "https://preyash2047.github.io/assets/img/no-preview-availabl
 
 // Default demo products
 const defaultProducts = [
-  { name: "Advent Circle", category: "Handycrafts", price: 200000, stock: 5, type: "in-stock", img: "https://daoerzenee.com/storage/products/01JBF1XTZXP1D28KSBSXSP4TM4.jpg" },
-  { name: "Bouquet", category: "Handycrafts", price: 200000, stock: 3, type: "in-stock", img: "https://daoerzenee.com/storage/products/01JN30P3AVQEMB8CQDNTG7ZDRP.jpg" },
-  { name: "Tissue Box", category: "Handycrafts", price: 50000, stock: 8, type: "in-stock", img: "https://daoerzenee.com/storage/products/01JN30A7X7P8GM65XJBWN1HPD4.jpg" },
-  { name: "Flower Bouquet", category: "Handycrafts", price: 200000, stock: 2, type: "in-stock", img: "https://daoerzenee.com/storage/products/01JBF3C2NBQMWM0VFVCHWZ44AC.jpg" },
-  { name: "Christmas Ornaments", category: "Handycrafts", price: 50000, stock: 10, type: "in-stock", img: "https://daoerzenee.com/storage/products/01JBF4BMX7WR907T8AGHJ7BREB.jpg" },
-  { name: "Custom Wooden Frame", category: "Handycrafts", price: 250000, type: "pre-order", preOrderLimit: 5, preOrdersMade: 0, img: "" }
+  {
+    name: "Advent Circle",
+    category: "Handycrafts",
+    price: 200000,
+    stock: 5,
+    type: "in-stock",
+    img: "https://daoerzenee.com/storage/products/01JBF1XTZXP1D28KSBSXSP4TM4.jpg",
+    description: "The Advent Circle began as a small festive idea among a group of village artisans in Yogyakarta who wanted to bring the warmth of Christmas to local homes. Each circle is carefully woven from reclaimed rattan and decorated with natural fibers, dried flowers, and subtle touches of gold paint. The workers, mostly mothers and young adults, collaborate in a communal workspace where they share stories and laughter while hand-tying each strand. Their process is slow, intentional, and full of care — every loop and knot carries the rhythm of tradition passed down through generations. Buying an Advent Circle isn’t just purchasing a decoration; it’s supporting a micro-community that sustains itself through craft. Many artisans use their earnings to fund children’s education or help their families during the festive season. When displayed, the Advent Circle becomes a reminder that beauty can be born from simple, humble materials — and that joy multiplies when shared."
+  },
+  {
+    name: "Bouquet",
+    category: "Handycrafts",
+    price: 200000,
+    stock: 3,
+    type: "in-stock",
+    img: "https://daoerzenee.com/storage/products/01JN30P3AVQEMB8CQDNTG7ZDRP.jpg",
+    description: "The Bouquet is made in Bandung by a small cooperative of women who started crafting artificial flowers during the pandemic to sustain their families. Using recycled paper, fabric offcuts, and locally sourced bamboo stems, each bouquet tells a story of resilience and rebirth. The artisans spend hours curling petals, hand-dyeing shades, and assembling harmonious color blends inspired by Indonesian flora. No two bouquets are ever alike — imperfections are embraced as signs of authenticity. Behind every petal is a worker’s touch, guided by memories of real gardens from their childhoods. The collective reinvests profits into better workspaces and skill workshops for young crafters. Customers often remark that these bouquets feel alive — not because they mimic real flowers perfectly, but because they carry human warmth. Owning a Bouquet means carrying a piece of Indonesia’s creative spirit and a symbol of how artistry can bloom even in challenging times."
+  },
+  {
+    name: "Tissue Box",
+    category: "Handycrafts",
+    price: 50000,
+    stock: 8,
+    type: "in-stock",
+    img: "https://daoerzenee.com/storage/products/01JN30A7X7P8GM65XJBWN1HPD4.jpg",
+    description: "The Tissue Box was born from the ingenuity of woodworkers in Jepara, a town famed for its furniture craftsmanship. After the global slowdown, many factories closed — but a handful of artisans continued working with leftover teak and mahogany scraps. They began shaping simple, elegant household pieces that merged function with story. Each tissue box is polished by hand, retaining the wood’s natural grain patterns, symbolizing both endurance and beauty in imperfection. The artisans say the scent of freshly cut wood reminds them of their fathers’ workshops — a connection to legacy that keeps their traditions alive. Every purchase helps sustain these independent craftsmen, many of whom train apprentices to preserve Jepara’s woodworking heritage. The result is a product that feels personal, warm, and timeless — a small, everyday item infused with decades of skill and pride."
+  },
+  {
+    name: "Flower Bouquet",
+    category: "Handycrafts",
+    price: 200000,
+    stock: 2,
+    type: "in-stock",
+    img: "https://daoerzenee.com/storage/products/01JBF3C2NBQMWM0VFVCHWZ44AC.jpg",
+    description: "The Flower Bouquet comes from the heart of Bali, crafted by a team of young artisans who merge traditional weaving with modern floral design. Using eco-friendly materials such as dried palm leaves and repurposed fabrics, the group focuses on sustainability while celebrating local artistry. Every bouquet reflects hours of patient craftsmanship — layering textures, blending colors, and binding each piece with love. The workshop operates as a small social enterprise, offering flexible work hours to mothers balancing childcare and creative work. Many of them describe their craft as therapeutic, helping them rebuild after economic hardship. By purchasing a Flower Bouquet, you’re directly supporting this empowerment model — where artistry meets livelihood. Each piece carries a distinct story, making it not just a decorative item but a statement of purpose, resilience, and hope."
+  },
+  {
+    name: "Christmas Ornaments",
+    category: "Handycrafts",
+    price: 50000,
+    stock: 10,
+    type: "in-stock",
+    img: "https://daoerzenee.com/storage/products/01JBF4BMX7WR907T8AGHJ7BREB.jpg",
+    description: "Each set of Christmas Ornaments is handmade in a small village workshop in Central Java, where generations of families have passed down the art of clay and wood carving. During the holiday season, the entire community gathers to craft tiny angels, stars, and wreaths painted with natural pigments derived from local plants. The production process doubles as a festive gathering — laughter, songs, and stories fill the workspace. Many artisans see this as a way to keep cultural heritage alive for their children. These ornaments are more than décor; they embody shared joy, collaboration, and the warmth of Indonesian craftsmanship. Every purchase helps sustain the artisans during the off-season, ensuring their traditions continue for years to come. Display them in your home, and you’ll not only add color to your celebrations but carry the essence of human connection across continents."
+  },
+  {
+    name: "Custom Wooden Frame",
+    category: "Handycrafts",
+    price: 250000,
+    type: "pre-order",
+    preOrderLimit: 5,
+    preOrdersMade: 0,
+    img: "",
+    description: "The Custom Wooden Frame is a personalized creation handcrafted in Solo by master woodcarvers who blend precision with artistry. Each frame begins as sustainably sourced teak, selected for its durability and natural beauty. Customers can request custom engravings — names, dates, or messages — that are carved by hand using traditional chisels. The artisans behind each frame work from family-run studios that have been active for over three decades. They view every commission as a personal dialogue between maker and buyer, ensuring that each product reflects the story of the person it’s made for. Many of these craftsmen teach younger apprentices, passing down both skills and values of patience, integrity, and dedication. When you pre-order a Custom Wooden Frame, you’re not only acquiring an heirloom piece but also supporting a legacy of Indonesian woodworking that thrives on meaning, not mass production."
+  }
 ];
 
 // Load products
