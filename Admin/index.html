@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +18,6 @@
 <!--  Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-success shadow-sm py-3">
   <div class="container">
-    <!-- Brand section -->
     <a class="navbar-brand fw-bold fs-4 d-flex align-items-center" href="/">
       <img src="https://th.bing.com/th/id/R.e552ff23eeb713ecc8ff182362a52fef?rik=g2uJfoTfvP6V%2bg&riu=http%3a%2f%2fdaoerzenee.com%2fphotos%2flogoFBaru.webp&ehk=Lx1YqKW79vb5W2Qk%2bx4gHnBVnwN6YYFyiv97hN2jG9E%3d&risl=&pid=ImgRaw&r=0" alt="Daoer Zenee Logo"
            style="height: 38px; width: auto; margin-right: 10px; border-radius: 4px;">
@@ -138,7 +139,14 @@
             <small id="stockLabel" class="text-muted d-block mt-1 text-center"></small>
           </div>
           <div class="col-md-2 col-6">
-            <input type="file" id="imgFile" accept="image/*" class="form-control" required>
+            <input type="file" id="imgFile" accept="image/*" class="form-control">
+          </div>
+        </div>
+
+        <!-- Description Box -->
+        <div class="row mt-3">
+          <div class="col-12">
+            <textarea id="description" class="form-control" rows="4" placeholder="Enter product description" required></textarea>
           </div>
         </div>
 
@@ -157,37 +165,7 @@
       📊 View Data Analysis Dashboard
     </a>
   </div>
-
 </div>
-
-<script>
-  // Enable/disable stock input dynamically with label change
-  document.addEventListener('DOMContentLoaded', () => {
-    const typeSelect = document.getElementById('type');
-    const stockInput = document.getElementById('stock');
-    const stockLabel = document.getElementById('stockLabel');
-
-    typeSelect.addEventListener('change', () => {
-      if (typeSelect.value === 'in-stock') {
-        stockInput.disabled = false;
-        stockInput.placeholder = 'Stock Quantity';
-        stockLabel.textContent = 'Enter available stock';
-        stockInput.required = true;
-      } else if (typeSelect.value === 'pre-order') {
-        stockInput.disabled = false;
-        stockInput.placeholder = 'Pre-order Limit';
-        stockLabel.textContent = 'Enter max pre-order quantity';
-        stockInput.required = true;
-      } else {
-        stockInput.disabled = true;
-        stockInput.value = '';
-        stockInput.placeholder = 'Quantity';
-        stockLabel.textContent = '';
-        stockInput.required = false;
-      }
-    });
-  });
-</script>
 
 <script src="../Admin/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

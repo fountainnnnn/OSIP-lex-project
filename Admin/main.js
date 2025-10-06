@@ -4,16 +4,13 @@ window.addEventListener("DOMContentLoaded", () => {
   renderPurchases();
 });
 
-// ✅ Ensure mock data loads only if no existing real data
+// ✅ Initialize mock data
 function initializeMockData() {
   const existingPurchases = JSON.parse(localStorage.getItem("purchases"));
   if (!existingPurchases || existingPurchases.length === 0) {
     const mockPurchases = [
       { product: "Batik Tote Bag", buyer: "Alya", type: "in-stock", quantity: 1, total: 85000, date: "2025-09-29" },
-      { product: "Handcrafted Soap", buyer: "Rafi", type: "in-stock", quantity: 3, total: 135000, date: "2025-09-30" },
-      { product: "Christmas Ornament Set", buyer: "Nadia", type: "pre-order", quantity: 2, total: 100000, date: "2025-10-01" },
-      { product: "Bamboo Lamp", buyer: "Lukas", type: "in-stock", quantity: 1, total: 220000, date: "2025-10-02" },
-      { product: "Woven Basket", buyer: "Elena", type: "pre-order", quantity: 2, total: 160000, date: "2025-10-03" }
+      { product: "Handcrafted Soap", buyer: "Rafi", type: "in-stock", quantity: 3, total: 135000, date: "2025-09-30" }
     ];
     localStorage.setItem("purchases", JSON.stringify(mockPurchases));
   }
@@ -21,11 +18,8 @@ function initializeMockData() {
   const existingProducts = JSON.parse(localStorage.getItem("products"));
   if (!existingProducts || existingProducts.length === 0) {
     const mockProducts = [
-      { name: "Batik Tote Bag", category: "Handycrafts", price: 85000, stock: 4, type: "in-stock" },
-      { name: "Handcrafted Soap", category: "Handycrafts", price: 45000, stock: 6, type: "in-stock" },
-      { name: "Christmas Ornament Set", category: "Decor", price: 50000, type: "pre-order", preOrderLimit: 5 },
-      { name: "Bamboo Lamp", category: "Home Decor", price: 220000, stock: 3, type: "in-stock" },
-      { name: "Woven Basket", category: "Handycrafts", price: 80000, type: "pre-order", preOrderLimit: 3 }
+      { name: "Batik Tote Bag", category: "Handycrafts", price: 85000, stock: 4, type: "in-stock", description: "Handmade batik tote bag with traditional patterns." },
+      { name: "Bamboo Lamp", category: "Home Decor", price: 220000, stock: 3, type: "in-stock", description: "Eco-friendly handcrafted bamboo lamp." }
     ];
     localStorage.setItem("products", JSON.stringify(mockProducts));
   }
@@ -35,20 +29,12 @@ function loadDashboard() {
   const products = JSON.parse(localStorage.getItem("products")) || [];
   const purchases = JSON.parse(localStorage.getItem("purchases")) || [];
 
-  // Count total products and purchases
   document.getElementById("totalProducts").textContent = products.length;
   document.getElementById("totalPurchases").textContent = purchases.reduce((sum, p) => sum + (p.quantity || 1), 0);
-
-  // Calculate total revenue correctly
-  const revenue = purchases.reduce((sum, p) => sum + (p.total || (p.quantity * p.amount) || 0), 0);
+  const revenue = purchases.reduce((sum, p) => sum + (p.total || 0), 0);
   document.getElementById("totalRevenue").textContent = revenue.toLocaleString("id-ID");
-
-  // Total stock (only for in-stock products)
-  const totalStock = products
-    .filter(p => p.type === "in-stock")
-    .reduce((sum, p) => sum + (p.stock || 0), 0);
-  const stockElement = document.getElementById("totalStock");
-  if (stockElement) stockElement.textContent = totalStock;
+  const totalStock = products.filter(p => p.type === "in-stock").reduce((sum, p) => sum + (p.stock || 0), 0);
+  document.getElementById("totalStock").textContent = totalStock;
 }
 
 function renderPurchases() {
@@ -67,8 +53,8 @@ function renderPurchases() {
       <td>${i + 1}</td>
       <td>${p.product}</td>
       <td>${p.buyer}</td>
-      <td>${p.type ? p.type.replace("-", " ") : "Unknown"}</td>
-      <td>${p.quantity || 1}</td>
+      <td>${p.type}</td>
+      <td>${p.quantity}</td>
       <td>Rp. ${(p.total || 0).toLocaleString("id-ID")}</td>
       <td>${p.date}</td>
     `;
@@ -86,15 +72,15 @@ document.getElementById("productForm").addEventListener("submit", async (e) => {
   const type = document.getElementById("type").value;
   const stockInput = document.getElementById("stock");
   const quantityValue = parseInt(stockInput.value) || 0;
+  const descText = document.getElementById("description").value.trim();
   const fileInput = document.getElementById("imgFile");
 
-  // Convert uploaded image to base64
+  // Convert uploaded image to base64 if provided
   let imgBase64 = "";
   if (fileInput.files.length > 0) {
     imgBase64 = await toBase64(fileInput.files[0]);
   }
 
-  // Default placeholder if no image uploaded
   const defaultImg = "https://preyash2047.github.io/assets/img/no-preview-available.png?h=824917b166935ea4772542bec6e8f636";
 
   const newProduct = {
@@ -102,6 +88,7 @@ document.getElementById("productForm").addEventListener("submit", async (e) => {
     category,
     price,
     img: imgBase64 || defaultImg,
+    description: descText,
     type,
     ...(type === "in-stock" && { stock: quantityValue }),
     ...(type === "pre-order" && { preOrderLimit: quantityValue, preOrdersMade: 0 })
@@ -116,7 +103,6 @@ document.getElementById("productForm").addEventListener("submit", async (e) => {
   loadDashboard();
 });
 
-// Convert file to Base64
 function toBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -125,26 +111,3 @@ function toBase64(file) {
     reader.onerror = reject;
   });
 }
-
-// ✅ Update stock input dynamically based on type selection
-document.addEventListener("DOMContentLoaded", () => {
-  const typeSelect = document.getElementById("type");
-  const stockInput = document.getElementById("stock");
-
-  typeSelect.addEventListener("change", () => {
-    if (typeSelect.value === "in-stock") {
-      stockInput.disabled = false;
-      stockInput.placeholder = "Stock Quantity";
-      stockInput.required = true;
-    } else if (typeSelect.value === "pre-order") {
-      stockInput.disabled = false;
-      stockInput.placeholder = "Pre-order Limit";
-      stockInput.required = true;
-    } else {
-      stockInput.disabled = true;
-      stockInput.placeholder = "";
-      stockInput.value = "";
-      stockInput.required = false;
-    }
-  });
-});
