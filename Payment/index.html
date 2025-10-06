@@ -50,15 +50,15 @@
           </div>
           <div class="mb-3">
             <label class="form-label">Contact Number</label>
-            <input type="tel" class="form-control" id="buyerPhone" placeholder="+65 8123 4567" required>
+            <input type="tel" class="form-control" id="buyerPhone" placeholder="+62 812-3456-7890" required>
           </div>
           <div class="mb-3">
             <label class="form-label">Email Address</label>
-            <input type="email" class="form-control" id="buyerEmail" placeholder="john@example.com" required>
+            <input type="email" class="form-control" id="buyerEmail" placeholder="johndoe@example.com" required>
           </div>
           <div class="mb-3">
             <label class="form-label">Shipping Address</label>
-            <textarea class="form-control" id="buyerAddress" rows="3" placeholder="123 Orchard Road, Singapore" required></textarea>
+            <textarea class="form-control" id="buyerAddress" rows="3" placeholder="Enter your address" required></textarea>
           </div>
 
           <h5 class="mt-4 mb-3">Payment Information</h5>
@@ -70,11 +70,21 @@
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label class="form-label">Expiry Date</label>
-                <input type="text" class="form-control" id="cardExpiry" placeholder="MM/YY" maxlength="5" required>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="cardExpiry" 
+                  placeholder="MM/YY" 
+                  maxlength="5" 
+                  required>
+                <div id="expiryError" class="text-danger mt-1" style="display:none;">
+                  Invalid or expired date
+                </div>
               </div>
+
               <div class="col-md-6 mb-3">
                 <label class="form-label">CVV</label>
-                <input type="text" class="form-control" id="cardCVV" placeholder="123" maxlength="3" required>
+                <input type="text" class="form-control" id="cardCVV" placeholder="999" maxlength="3" required>
               </div>
             </div>
           </div>

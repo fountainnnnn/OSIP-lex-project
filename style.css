@@ -108,3 +108,22 @@ h2 {
   #productViewModal img { max-height: 220px; }
   .cart-dropdown { min-width: 90vw; }
 }
+
+
+#cartDropdown i {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+#cartDropdown:hover i {
+  transform: scale(1.15);
+  color: #ffffff; /* Bootstrap blue */
+}
+
+.badge {
+  margin-top: 5px !important;
+  margin-right: 5px !important;
+}
+
+.cart-dropdown li {
+  font-weight: 700 !important;
+}

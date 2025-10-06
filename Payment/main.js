@@ -25,6 +25,46 @@ function recordPurchase(purchaseData) {
   localStorage.setItem("products", JSON.stringify(products));
 }
 
+  const expiryInput = document.getElementById("cardExpiry");
+  const expiryError = document.getElementById("expiryError");
+
+  expiryInput.addEventListener("input", (e) => {
+    let value = e.target.value.replace(/\D/g, ""); // remove non-digits
+
+    // Auto-insert slash after 2 digits
+    if (value.length >= 3) {
+      value = value.slice(0, 2) + "/" + value.slice(2, 4);
+    }
+    e.target.value = value;
+
+    // Validate month and expiry date
+    if (value.length === 5) {
+      const [month, year] = value.split("/").map((v) => parseInt(v, 10));
+
+      // Check valid month
+      if (month < 1 || month > 12) {
+        expiryError.textContent = "Invalid month";
+        expiryError.style.display = "block";
+        return;
+      }
+
+      // Convert YY to 20YY
+      const fullYear = 2000 + year;
+      const now = new Date();
+      const expiryDate = new Date(fullYear, month); // first day of next month
+
+      // Check if expiry is in the future
+      if (expiryDate <= now) {
+        expiryError.textContent = "Card expired";
+        expiryError.style.display = "block";
+      } else {
+        expiryError.style.display = "none";
+      }
+    } else {
+      expiryError.style.display = "none";
+    }
+  });
+
 //  Render the checkout summary
 function renderSummary() {
   const cart = getCart();
