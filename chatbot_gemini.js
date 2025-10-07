@@ -166,7 +166,7 @@ User: "${userText}"
 
   try {
     geminiKey =
-      window.GEMINI_API_KEY ||
+      "AIzaSyCJOgviOOa8Ng4YfVygkwl42dMJNWLa_n4" ||
       (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_GEMINI_API_KEY) ||
       (typeof process !== "undefined" && process.env?.GEMINI_API_KEY);
 

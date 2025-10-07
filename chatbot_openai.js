@@ -180,7 +180,7 @@ User: "${userText}"
 
   try {
     openaiKey =
-      window.OPENAI_API_KEY ||
+      "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" ||
       (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_OPENAI_API_KEY) ||
       (typeof process !== "undefined" && process.env?.OPENAI_API_KEY);
 
