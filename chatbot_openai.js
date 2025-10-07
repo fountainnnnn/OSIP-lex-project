@@ -16,7 +16,7 @@ let chatMemory = [];
 // --- Load Daoer Zenee knowledge base ---
 async function loadContext() {
   try {
-    const res = await fetch("daoer-zenee-data.txt");
+    const res = await fetch("/daoer-zenee-data.txt");
     if (!res.ok) throw new Error("daoer-zenee-data.txt not found");
     const text = await res.text();
     daoerData = text.split("\n").map(l => l.trim()).filter(Boolean);
