@@ -1,7 +1,7 @@
 // Daoer Zenee Smart Chatbot — Gemini 2.5 Flash (Enhanced RAG + Summarization) 🌿
 // Browser-safe, works on Vercel/static sites
 // Uses daoer-zenee-data.txt as lightweight RAG context
-// Now intelligently infers + summarizes related info from multiple lines
+// Intelligently infers + summarizes related info from multiple lines
 // Memory: remembers last 2 exchanges
 // Replies: short, clear, and cheap
 
@@ -9,8 +9,9 @@ import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 
 const chatToggle = document.getElementById("chat-toggle");
 const chatWindow = document.getElementById("chat-window");
-const chatBody   = document.getElementById("chat-body");
-const chatInput  = document.getElementById("chat-input");
+const chatBody = document.getElementById("chat-body");
+const chatInput = document.getElementById("chat-input");
+const chatSend = document.getElementById("chat-send");
 
 let daoerData = [];
 let geminiKey = null;
@@ -24,7 +25,7 @@ async function loadContext() {
     if (!res.ok) throw new Error("daoer-zenee-data.txt not found");
     const text = await res.text();
     daoerData = text.split("\n").map(l => l.trim()).filter(Boolean);
-    console.log(" Daoer Zenee data loaded:", daoerData.length, "lines");
+    console.log("✅ Daoer Zenee data loaded:", daoerData.length, "lines");
   } catch (err) {
     console.error(err);
     appendMsg("bot", "Hmm… I can’t find my Daoer Zenee knowledge 😢");
@@ -56,7 +57,7 @@ function offlineReply(input) {
   const random = [
     "That’s interesting 🌸",
     "Could you tell me a bit more?",
-    "Every piece has a story 🌿"
+    "Every piece has a story 🌿",
   ];
   return random[Math.floor(Math.random() * random.length)];
 }
@@ -82,16 +83,11 @@ function retrieveContext(userText, topN = 8) {
     let score = 0;
     const l = line.toLowerCase();
 
-    // Partial matches
-    for (const w of words)
-      if (l.includes(w) || w.includes(l)) score += 1;
-
-    // Brand sensitivity
+    for (const w of words) if (l.includes(w) || w.includes(l)) score += 1;
     if (l.includes("daoer zenee")) score += 3;
     if (l.includes("jakarta")) score += 2;
     if (l.includes("community")) score += 2;
 
-    // Synonym matching
     for (const group of Object.values(synonyms)) {
       if (group.some(g => lower.includes(g) && l.includes(g))) score += 2;
     }
@@ -99,15 +95,12 @@ function retrieveContext(userText, topN = 8) {
     return { line, score };
   });
 
-  // Keep top matches even with low score to infer broader context
   const top = scored
     .filter(t => t.score > 0)
     .sort((a, b) => b.score - a.score)
     .slice(0, topN);
 
-  // Summarize related info for Gemini
-  const summarized = top.map(t => t.line).join(" ");
-  return summarized;
+  return top.map(t => t.line).join(" ");
 }
 
 // --- Gemini query (browser-safe) ---
@@ -180,7 +173,7 @@ User: "${userText}"
     if (!geminiKey) {
       console.warn("⚠️ No GEMINI_API_KEY found → offline mode only.");
     } else {
-      console.log(" Gemini API key loaded successfully.");
+      console.log("✅ Gemini API key loaded successfully.");
       const ai = new GoogleGenerativeAI(geminiKey);
       model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
     }
@@ -198,7 +191,21 @@ chatInput.addEventListener("keydown", e => {
   }
 });
 
+// --- Chat toggle, send button, and outside click close ---
 chatToggle.addEventListener("click", () => {
-  chatWindow.style.display =
-    chatWindow.style.display === "flex" ? "none" : "flex";
+  chatWindow.classList.toggle("show");
+});
+
+chatSend.addEventListener("click", () => {
+  if (chatInput.value.trim()) {
+    const event = new KeyboardEvent("keydown", { key: "Enter" });
+    chatInput.dispatchEvent(event);
+  }
+});
+
+// Optional: close when clicking outside
+document.addEventListener("click", e => {
+  if (!chatWindow.contains(e.target) && !chatToggle.contains(e.target)) {
+    chatWindow.classList.remove("show");
+  }
 });

@@ -104,114 +104,34 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- ======== DAOER ZENEE CHATBOT ======== -->
-<style>
-  #chat-toggle {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #198754;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    font-size: 26px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-    cursor: pointer;
-    z-index: 9999;
-  }
-
-  #chat-window {
-    position: fixed;
-    bottom: 90px;
-    right: 20px;
-    width: 340px;
-    max-height: 520px;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-    display: none;
-    flex-direction: column;
-    overflow: hidden;
-    z-index: 9999;
-  }
-
-  #chat-header {
-    background: #198754;
-    color: white;
-    padding: 10px 15px;
-    font-weight: bold;
-  }
-
-  #chat-body {
-    flex: 1;
-    overflow-y: auto;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .msg {
-    margin: 6px 0;
-    padding: 8px 12px;
-    border-radius: 8px;
-    max-width: 80%;
-    line-height: 1.4;
-    white-space: pre-wrap;
-  }
-
-  .bot { background: #f1f1f1; align-self: flex-start; }
-  .user { background: #d1e7dd; align-self: flex-end; }
-
-  #chat-input-area {
-    display: flex;
-    border-top: 1px solid #ccc;
-  }
-
-  #chat-input {
-    flex: 1;
-    border: none;
-    padding: 10px;
-  }
-
-  #chat-input:focus { outline: none; }
-
-  #predefined-questions {
-    border-top: 1px solid #ddd;
-    max-height: 120px;
-    overflow-y: auto;
-    padding: 6px;
-    text-align: center;
-  }
-
-  #predefined-questions button {
-    margin: 3px;
-    font-size: 12px;
-  }
-
-  @media (max-width: 480px) {
-    #chat-window { width: 90%; right: 5%; bottom: 90px; }
-  }
-</style>
-
 <button id="chat-toggle">💬</button>
+
 <div id="chat-window" class="d-flex flex-column">
   <div id="chat-header">Daoer Zenee Assistant</div>
   <div id="chat-body">
     <div class="msg bot">Hi there 👋<br>I'm the Daoer Zenee assistant. How can I help you today?</div>
   </div>
-  <div id="predefined-questions"></div>
   <div id="chat-input-area">
-    <input id="chat-input" type="text" placeholder="Type your question and press Enter...">
+    <input id="chat-input" type="text" placeholder="Type your message...">
+    <button id="chat-send"><i class="bi bi-send-fill"></i></button>
   </div>
 </div>
+
+<!-- TEMPORARY: API Key for Gemini -->
+<script>
+  window.GEMINI_API_KEY = "YOUR_REAL_GEMINI_KEY_HERE";
+</script>
+<script type="module" src="chatbot.js"></script>
+
 <!-- REMEMBER TO HIDE THIS BELOW IN REAL APP IMPLEMENTATION  -->
 <script>
   window.GEMINI_API_KEY = "AIzaSyCJOgviOOa8Ng4YfVygkwl42dMJNWLa_n4";
 </script>
+ <script>
+  window.OPENAI_API_KEY = "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";
+</script>
 <!-- REMEMBER TO HIDE THIS ABOVE IN REAL APP IMPLEMENTATION  -->
-<script type="module" src="chatbot.js"></script>
-
+<!-- <script type="module" src="chatbot_gemini.js"></script> -->
+<script type="module" src="chatbot_openai.js"></script>
 </body>
 </html>
