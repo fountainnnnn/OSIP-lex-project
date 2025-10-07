@@ -1,22 +1,15 @@
-// Daoer Zenee Smart Chatbot — Gemini 2.5 Flash (Enhanced RAG + Summarization) 🌿
-// Browser-safe, works on Vercel/static sites
-// Uses daoer-zenee-data.txt as lightweight RAG context
-// Intelligently infers + summarizes related info from multiple lines
-// Memory: remembers last 2 exchanges
-// Replies: short, clear, and cheap
-
-import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+// Daoer Zenee Smart Chatbot — Gemini 2.5 Flash (Secure Server Proxy + RAG) 🌿
+// Works safely on static Vercel sites.  The browser never sees the API key.
+// Uses daoer-zenee-data.txt as lightweight RAG knowledge.
 
 const chatToggle = document.getElementById("chat-toggle");
 const chatWindow = document.getElementById("chat-window");
-const chatBody = document.getElementById("chat-body");
-const chatInput = document.getElementById("chat-input");
-const chatSend = document.getElementById("chat-send");
+const chatBody   = document.getElementById("chat-body");
+const chatInput  = document.getElementById("chat-input");
+const chatSend   = document.getElementById("chat-send");
 
 let daoerData = [];
-let geminiKey = null;
 let chatMemory = [];
-let model = null;
 
 // --- Load Daoer Zenee knowledge base ---
 async function loadContext() {
@@ -62,53 +55,57 @@ function offlineReply(input) {
   return random[Math.floor(Math.random() * random.length)];
 }
 
-// --- Smart RAG: brand-sensitive, semantic scoring ---
+// --- Smart RAG retrieval ---
 function retrieveContext(userText, topN = 8) {
   if (daoerData.length === 0) return "";
-
   const lower = userText.toLowerCase();
   const words = lower.split(/\s+/);
 
   const synonyms = {
-    address: ["address", "where", "located", "location", "place", "find", "visit", "office"],
-    product: ["product", "item", "sell", "buy", "price", "catalog", "make"],
-    contact: ["contact", "phone", "email", "whatsapp"],
-    founder: ["founder", "who started", "who runs", "leader", "creator"],
-    community: ["community", "group", "member", "volunteer", "people"],
-    mission: ["mission", "goal", "purpose", "vision"],
-    origin: ["origin", "start", "history", "founded", "began"],
+    address: ["address","where","located","location","place","find","visit","office"],
+    product: ["product","item","sell","buy","price","catalog","make"],
+    contact: ["contact","phone","email","whatsapp"],
+    founder: ["founder","who started","who runs","leader","creator"],
+    community: ["community","group","member","volunteer","people"],
+    mission: ["mission","goal","purpose","vision"],
+    origin: ["origin","start","history","founded","began"],
   };
 
   const scored = daoerData.map(line => {
     let score = 0;
     const l = line.toLowerCase();
-
     for (const w of words) if (l.includes(w) || w.includes(l)) score += 1;
     if (l.includes("daoer zenee")) score += 3;
     if (l.includes("jakarta")) score += 2;
     if (l.includes("community")) score += 2;
-
-    for (const group of Object.values(synonyms)) {
+    for (const group of Object.values(synonyms))
       if (group.some(g => lower.includes(g) && l.includes(g))) score += 2;
-    }
-
     return { line, score };
   });
 
-  const top = scored
+  return scored
     .filter(t => t.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, topN);
-
-  return top.map(t => t.line).join(" ");
+    .sort((a,b)=>b.score-a.score)
+    .slice(0, topN)
+    .map(t=>t.line)
+    .join(" ");
 }
 
-// --- Gemini query (browser-safe) ---
+// --- Query Gemini through Vercel backend ---
 async function queryGemini(prompt) {
-  if (!model) throw new Error("Gemini model not initialized");
-  const result = await model.generateContent(prompt);
-  const text = await result.response.text();
-  return text || "(no response)";
+  try {
+    const res = await fetch("/api/gemini", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt }),
+    });
+    if (!res.ok) throw new Error("Gemini API route error");
+    const data = await res.json();
+    return data.reply || "(no response)";
+  } catch (err) {
+    console.warn("⚠️ Falling back to offline mode:", err);
+    return "(Offline mode 🌿) My creator’s API quota ran out — but I can still chat from memory!";
+  }
 }
 
 // --- Respond logic ---
@@ -129,7 +126,6 @@ async function respond(userText) {
 
     const ragPrompt = `
 You are Daoer Zenee’s friendly assistant.
-You have access to summarized facts about Daoer Zenee below.
 
 Short-term memory (last 2 exchanges):
 ${memoryContext || "(no prior messages)"}
@@ -139,10 +135,10 @@ ${retrieved || "(no extra context found)"}
 
 Instructions:
 - Infer answers even if exact wording isn’t present.
-- Combine multiple facts if needed to form a complete answer.
+- Combine multiple facts if needed.
 - Reply naturally in 1–2 short sentences.
-- If the question is about Daoer Zenee, ensure the reply reflects its brand, crafts, or social mission.
-- If unrelated, just answer plainly and briefly.
+- If question is about Daoer Zenee, reflect its brand, crafts, or social mission.
+- Otherwise, reply plainly and briefly.
 
 User: "${userText}"
 `;
@@ -161,25 +157,9 @@ User: "${userText}"
 
 // --- Initialize chatbot ---
 (async () => {
-  console.log("💬 Initializing Daoer Zenee Assistant (Enhanced RAG Mode)...");
+  console.log("💬 Initializing Daoer Zenee Assistant (Gemini Secure Mode)...");
   await loadContext();
-
-  try {
-    geminiKey =
-      "AIzaSyCJOgviOOa8Ng4YfVygkwl42dMJNWLa_n4" ||
-      (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_GEMINI_API_KEY) ||
-      (typeof process !== "undefined" && process.env?.GEMINI_API_KEY);
-
-    if (!geminiKey) {
-      console.warn("⚠️ No GEMINI_API_KEY found → offline mode only.");
-    } else {
-      console.log("✅ Gemini API key loaded successfully.");
-      const ai = new GoogleGenerativeAI(geminiKey);
-      model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
-    }
-  } catch (err) {
-    console.warn("⚠️ Could not init Gemini client, offline mode.", err);
-  }
+  console.log("✅ Ready — backend /api/gemini will use GEMINI_API_KEY from Vercel env vars.");
 })();
 
 // --- Events ---
@@ -190,22 +170,14 @@ chatInput.addEventListener("keydown", e => {
     respond(t);
   }
 });
-
-// --- Chat toggle, send button, and outside click close ---
-chatToggle.addEventListener("click", () => {
-  chatWindow.classList.toggle("show");
-});
-
 chatSend.addEventListener("click", () => {
   if (chatInput.value.trim()) {
     const event = new KeyboardEvent("keydown", { key: "Enter" });
     chatInput.dispatchEvent(event);
   }
 });
-
-// Optional: close when clicking outside
+chatToggle.addEventListener("click", () => chatWindow.classList.toggle("show"));
 document.addEventListener("click", e => {
-  if (!chatWindow.contains(e.target) && !chatToggle.contains(e.target)) {
+  if (!chatWindow.contains(e.target) && !chatToggle.contains(e.target))
     chatWindow.classList.remove("show");
-  }
 });

@@ -1,11 +1,8 @@
-// Daoer Zenee Smart Chatbot — OpenAI GPT-4o Mini (Enhanced RAG + Summarization) 🌿
-// Browser-safe, works on Vercel/static sites
+// Daoer Zenee Smart Chatbot — OpenAI GPT-4o Mini (Secure Server Proxy) 🌿
+// Browser-safe: works on static Vercel deployments
 // Uses daoer-zenee-data.txt as lightweight RAG context
-// Intelligently infers + summarizes related info from multiple lines
-// Memory: remembers last 2 exchanges
-// Replies: short, clear, and cheap
-
-import OpenAI from "https://cdn.jsdelivr.net/npm/openai@4.57.0/+esm";
+// Securely calls OpenAI through /api/chat (hides API key)
+// Replies: short, natural, and on-brand
 
 const chatToggle = document.getElementById("chat-toggle");
 const chatWindow = document.getElementById("chat-window");
@@ -14,9 +11,7 @@ const chatInput = document.getElementById("chat-input");
 const chatSend = document.getElementById("chat-send");
 
 let daoerData = [];
-let openaiKey = null;
 let chatMemory = [];
-let client = null;
 
 // --- Load Daoer Zenee knowledge base ---
 async function loadContext() {
@@ -62,7 +57,7 @@ function offlineReply(input) {
   return random[Math.floor(Math.random() * random.length)];
 }
 
-// --- Smart RAG: brand-sensitive, semantic scoring ---
+// --- Smart RAG: semantic scoring of Daoer Zenee context ---
 function retrieveContext(userText, topN = 8) {
   if (daoerData.length === 0) return "";
 
@@ -104,24 +99,21 @@ function retrieveContext(userText, topN = 8) {
   return top.map(t => t.line).join(" ");
 }
 
-// --- OpenAI query (browser-safe) ---
+// --- Query OpenAI via secure Vercel API route ---
 async function queryOpenAI(prompt) {
-  if (!client) throw new Error("OpenAI client not initialized");
-
   try {
-    const response = await client.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.6,
-      max_tokens: 120,
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt }),
     });
-    return response.choices[0].message.content || "(no response)";
+
+    if (!res.ok) throw new Error("API route error");
+    const data = await res.json();
+    return data.reply || "(no response)";
   } catch (err) {
-    if (err.status === 429) {
-      console.warn("⚠️ Rate limit or quota exceeded — switching to offline mode");
-      return "(Offline mode 🌿) My creator’s API quota ran out — but I can still chat from memory!";
-    }
-    throw err;
+    console.warn("⚠️ Falling back to offline mode:", err);
+    return "(Offline mode 🌿) My creator’s API quota ran out — but I can still chat from memory!";
   }
 }
 
@@ -175,24 +167,9 @@ User: "${userText}"
 
 // --- Initialize chatbot ---
 (async () => {
-  console.log("💬 Initializing Daoer Zenee Assistant (OpenAI RAG Mode)...");
+  console.log("💬 Initializing Daoer Zenee Assistant (Secure API Mode)...");
   await loadContext();
-
-  try {
-    openaiKey =
-      "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" ||
-      (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_OPENAI_API_KEY) ||
-      (typeof process !== "undefined" && process.env?.OPENAI_API_KEY);
-
-    if (!openaiKey) {
-      console.warn("⚠️ No OPENAI_API_KEY found → offline mode only.");
-    } else {
-      console.log("✅ OpenAI API key loaded successfully.");
-      client = new OpenAI({ apiKey: openaiKey, dangerouslyAllowBrowser: true });
-    }
-  } catch (err) {
-    console.warn("⚠️ Could not init OpenAI client, offline mode.", err);
-  }
+  console.log("✅ Ready — will use serverless /api/chat route with Vercel env OPENAI_API_KEY");
 })();
 
 // --- Events ---
@@ -204,16 +181,15 @@ chatInput.addEventListener("keydown", e => {
   }
 });
 
-// --- Chat toggle + close on outside click ---
-chatToggle.addEventListener("click", () => {
-  chatWindow.classList.toggle("show");
-});
-
 chatSend.addEventListener("click", () => {
   if (chatInput.value.trim()) {
     const event = new KeyboardEvent("keydown", { key: "Enter" });
     chatInput.dispatchEvent(event);
   }
+});
+
+chatToggle.addEventListener("click", () => {
+  chatWindow.classList.toggle("show");
 });
 
 // Optional: Close when clicking outside chat
