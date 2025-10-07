@@ -2,22 +2,16 @@
   "version": 2,
   "builds": [
     { "src": "api/**/*.js", "use": "@vercel/node" },
-    { "src": "public/**", "use": "@vercel/static" },
     { "src": "**/*.html", "use": "@vercel/static" },
     { "src": "**/*.js", "use": "@vercel/static" },
     { "src": "**/*.css", "use": "@vercel/static" },
-    { "src": "**/*.txt", "use": "@vercel/static" },
     { "src": "**/*.(png|jpg|jpeg|gif|svg|webp|ico)", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1.js" },
-
-    { "src": "/(Data|Admin|Payment)(/)?$", "dest": "/$1/index.html" },
-
-    { "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|webp|ico|txt))", "dest": "/$1" },
-
-    { "src": "/$", "dest": "/index.html" },
-    
+    { "src": "/(Payment|Admin|Data)(?:/)?$", "dest": "/$1/index.html" },
+    { "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|webp|ico))", "dest": "/$1" },
+    { "src": "/", "dest": "/index.html" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
