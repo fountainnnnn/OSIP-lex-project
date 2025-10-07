@@ -1,28 +1,22 @@
-// api/chat.js — Vercel serverless route for Daoer Zenee chatbot (OpenAI)
+// api/chat.js — Vercel Serverless OpenAI Proxy
 import OpenAI from "openai";
 
 export default async function handler(req, res) {
   try {
-    // Vercel body parsing: ensure JSON
-    const { prompt } = req.body || {};
+    const body = await readBody(req);
+    const { prompt } = body;
 
     if (!prompt) {
-      res.status(400).json({ reply: "Missing prompt" });
-      return;
+      return res.status(400).json({ reply: "Missing prompt in request" });
     }
 
-    // ✅ Read key from Vercel env vars
-    const openaiKey = process.env.OPENAI_API_KEY;
-    if (!openaiKey) {
-      console.error("❌ Missing OPENAI_API_KEY");
-      res.status(500).json({ reply: "API key not configured" });
-      return;
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      console.error("❌ OPENAI_API_KEY missing in environment");
+      return res.status(500).json({ reply: "Server not configured with API key" });
     }
 
-    // ✅ Initialize client
-    const openai = new OpenAI({ apiKey: openaiKey });
-
-    // ✅ Query OpenAI
+    const openai = new OpenAI({ apiKey });
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [{ role: "user", content: prompt }],
@@ -30,10 +24,21 @@ export default async function handler(req, res) {
       max_tokens: 120,
     });
 
-    const reply = response.choices?.[0]?.message?.content || "(no reply)";
-    res.status(200).json({ reply });
+    const reply = response.choices?.[0]?.message?.content ?? "(no reply)";
+    return res.status(200).json({ reply });
   } catch (err) {
     console.error("🔥 OpenAI API error:", err);
-    res.status(500).json({ reply: "(Offline mode 🌿) API error on server." });
+    return res.status(500).json({ reply: "(Offline mode 🌿) API server error." });
+  }
+}
+
+// --- Helper for parsing body safely ---
+async function readBody(req) {
+  const chunks = [];
+  for await (const chunk of req) chunks.push(chunk);
+  try {
+    return JSON.parse(Buffer.concat(chunks).toString());
+  } catch {
+    return {};
   }
 }
