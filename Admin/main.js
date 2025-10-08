@@ -157,7 +157,7 @@ function setupStockInputToggle() {
       stockInput.required = true;
     } else {
       stockInput.disabled = true;
-      stockInput.placeholder = "Quantity";
+      stockInput.placeholder = "Quantity"; 
       stockLabel.textContent = "";
       stockInput.required = false;
       stockInput.value = "";

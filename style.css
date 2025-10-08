@@ -226,3 +226,16 @@ h2 {
 @media (max-width: 480px) {
   #chat-window { width: 90%; right: 5%; bottom: 90px; }
 }
+
+#Purchase-Btn {
+  position: absolute !important;
+  left: 0.8rem !important;
+}
+
+.preview-modal {
+  padding: 2rem 0rem 2rem 0rem !important;
+}
+
+.prod-btn {
+  padding: 0.5rem 3rem 0.5rem 3rem !important;
+}
